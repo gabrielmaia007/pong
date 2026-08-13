@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEON PONG</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="background">
+        <div class="grid"></div>
+        <div class="glow glow-1"></div>
+        <div class="glow glow-2"></div>
+    </div>
+
+    <main class="game-wrapper">
+
+        <header class="topbar">
+            <div class="logo">
+                <span>NEON</span> PONG
+            </div>
+
+            <div class="status">
+                <span class="status-dot"></span>
+                SYSTEM ONLINE
+            </div>
+        </header>
+
+        <section class="scoreboard">
+            <div class="player">
+                <span>PLAYER</span>
+                <strong id="playerScore">0</strong>
+            </div>
+
+            <div class="vs">VS</div>
+
+            <div class="player enemy">
+                <span>AI</span>
+                <strong id="aiScore">0</strong>
+            </div>
+        </section>
+
+        <div class="game-container">
+            <canvas id="gameCanvas"></canvas>
+
+            <div class="scanlines"></div>
+
+            <div class="center-line"></div>
+
+            <div class="message" id="message">
+                <h1>NEON PONG</h1>
+                <p>PRESSIONE <b>ESPAÇO</b> PARA COMEÇAR</p>
+            </div>
+
+            <div class="hud">
+                <div>
+                    <span>FPS</span>
+                    <b id="fps">60</b>
+                </div>
+
+                <div>
+                    <span>SPEED</span>
+                    <b id="speed">1.0x</b>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <div>
+                <span class="key">W</span>
+                <span class="key">S</span>
+                MOVER
+            </div>
+
+            <div>
+                <span class="key wide">SPACE</span>
+                INICIAR
+            </div>
+
+            <div>
+                <span class="key">R</span>
+                REINICIAR
+            </div>
+        </footer>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

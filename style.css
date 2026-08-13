@@ -1,0 +1,408 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --cyan: #00f7ff;
+    --pink: #ff007a;
+    --blue: #0066ff;
+    --bg: #02030a;
+}
+
+body {
+    width: 100%;
+    min-height: 100vh;
+    overflow: hidden;
+    background: var(--bg);
+    color: white;
+    font-family: 'Orbitron', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* =========================
+   BACKGROUND
+========================= */
+
+.background {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at 50% 50%, #071529 0%, #02030a 55%, #000 100%);
+}
+
+.grid {
+    position: absolute;
+    inset: -100%;
+    background-image:
+        linear-gradient(rgba(0, 247, 255, .04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 247, 255, .04) 1px, transparent 1px);
+    background-size: 55px 55px;
+    transform: perspective(500px) rotateX(60deg);
+    animation: gridMove 12s linear infinite;
+}
+
+@keyframes gridMove {
+    from {
+        transform: perspective(500px) rotateX(60deg) translateY(0);
+    }
+
+    to {
+        transform: perspective(500px) rotateX(60deg) translateY(55px);
+    }
+}
+
+.glow {
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    filter: blur(140px);
+    opacity: .18;
+}
+
+.glow-1 {
+    background: var(--cyan);
+    top: -250px;
+    left: -200px;
+}
+
+.glow-2 {
+    background: var(--pink);
+    bottom: -250px;
+    right: -200px;
+}
+
+/* =========================
+   GAME
+========================= */
+
+.game-wrapper {
+    width: min(1250px, 94vw);
+    position: relative;
+    z-index: 2;
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+}
+
+.logo {
+    font-size: clamp(18px, 2vw, 28px);
+    font-weight: 900;
+    letter-spacing: 5px;
+    text-shadow:
+        0 0 10px var(--cyan),
+        0 0 30px rgba(0, 247, 255, .5);
+}
+
+.logo span {
+    color: var(--cyan);
+}
+
+.status {
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: #8da5b8;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #00ff88;
+    box-shadow: 0 0 10px #00ff88;
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    50% {
+        opacity: .25;
+    }
+}
+
+/* =========================
+   SCORE
+========================= */
+
+.scoreboard {
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 80px;
+}
+
+.player {
+    width: 170px;
+    text-align: center;
+}
+
+.player span {
+    display: block;
+    color: #7591a5;
+    font-size: 11px;
+    letter-spacing: 4px;
+    margin-bottom: 4px;
+}
+
+.player strong {
+    display: block;
+    font-size: 54px;
+    color: var(--cyan);
+    text-shadow:
+        0 0 8px var(--cyan),
+        0 0 25px rgba(0, 247, 255, .7);
+}
+
+.enemy strong {
+    color: var(--pink);
+    text-shadow:
+        0 0 8px var(--pink),
+        0 0 25px rgba(255, 0, 122, .7);
+}
+
+.vs {
+    color: #455568;
+    font-size: 12px;
+    letter-spacing: 4px;
+}
+
+/* =========================
+   CANVAS
+========================= */
+
+.game-container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    max-height: 68vh;
+    border: 1px solid rgba(0, 247, 255, .45);
+    background: rgba(0, 10, 20, .65);
+    box-shadow:
+        0 0 20px rgba(0, 247, 255, .12),
+        inset 0 0 50px rgba(0, 247, 255, .04);
+    overflow: hidden;
+}
+
+canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* scanlines */
+
+.scanlines {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+
+    background:
+        repeating-linear-gradient(to bottom,
+            rgba(255, 255, 255, .025) 0px,
+            rgba(255, 255, 255, .025) 1px,
+            transparent 2px,
+            transparent 5px);
+
+    mix-blend-mode: screen;
+    opacity: .35;
+}
+
+/* center line */
+
+.center-line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 2px;
+
+    background: repeating-linear-gradient(to bottom,
+            rgba(255, 255, 255, .35) 0px,
+            rgba(255, 255, 255, .35) 12px,
+            transparent 12px,
+            transparent 25px);
+
+    opacity: .25;
+    pointer-events: none;
+}
+
+/* =========================
+   MESSAGE
+========================= */
+
+.message {
+    position: absolute;
+    inset: 0;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    background: radial-gradient(circle,
+            rgba(0, 15, 30, .25),
+            rgba(0, 0, 0, .65));
+
+    backdrop-filter: blur(2px);
+
+    transition: .4s;
+}
+
+.message.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.message h1 {
+    font-size: clamp(30px, 5vw, 70px);
+    letter-spacing: 12px;
+    color: white;
+
+    text-shadow:
+        0 0 8px white,
+        0 0 30px var(--cyan),
+        0 0 60px var(--cyan);
+
+    animation: titlePulse 2s ease-in-out infinite;
+}
+
+.message p {
+    margin-top: 20px;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: #9bb2c5;
+}
+
+.message b {
+    color: var(--cyan);
+}
+
+@keyframes titlePulse {
+    50% {
+        text-shadow:
+            0 0 15px white,
+            0 0 45px var(--cyan),
+            0 0 90px var(--cyan);
+    }
+}
+
+/* =========================
+   HUD
+========================= */
+
+.hud {
+    position: absolute;
+    top: 14px;
+    left: 16px;
+    display: flex;
+    gap: 20px;
+    pointer-events: none;
+}
+
+.hud div {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.hud span {
+    font-size: 7px;
+    letter-spacing: 2px;
+    color: #557080;
+}
+
+.hud b {
+    font-size: 9px;
+    color: var(--cyan);
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+footer {
+    display: flex;
+    justify-content: center;
+    gap: 35px;
+    padding-top: 16px;
+    color: #536777;
+    font-size: 8px;
+    letter-spacing: 2px;
+}
+
+footer div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.key {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+
+    min-width: 24px;
+    height: 22px;
+
+    border: 1px solid #355365;
+    color: #9ab1c0;
+    background: rgba(255, 255, 255, .03);
+
+    box-shadow:
+        inset 0 0 8px rgba(0, 247, 255, .04);
+}
+
+.key.wide {
+    width: 55px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width: 700px) {
+
+    .scoreboard {
+        gap: 10px;
+        height: 75px;
+    }
+
+    .player {
+        width: 110px;
+    }
+
+    .player strong {
+        font-size: 35px;
+    }
+
+    .game-container {
+        aspect-ratio: 4 / 3;
+    }
+
+    footer {
+        gap: 10px;
+        font-size: 7px;
+    }
+
+    .logo {
+        letter-spacing: 2px;
+    }
+
+    .status {
+        display: none;
+    }
+}
